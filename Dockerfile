@@ -7,5 +7,5 @@ RUN cd /src && go build cli.go && \
 go build executor.go && mv cli /cli && \
 mv executor /executor && cd / && \
 rm -rf /src /go
-
+WORKDIR "/"
 ENTRYPOINT ["/cli"]
