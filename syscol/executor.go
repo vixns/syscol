@@ -22,7 +22,7 @@ import (
 	"github.com/elodina/go-kafka-avro"
 	"github.com/elodina/siesta"
 	"github.com/elodina/siesta-producer"
-	"github.com/jimlawless/cfg"
+	"github.com/yanzay/cfg"
 	"github.com/mesos/mesos-go/executor"
 	mesos "github.com/mesos/mesos-go/mesosproto"
 )

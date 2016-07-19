@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/elodina/siesta-producer"
-	"github.com/elodina/syscol/avro"
+	"../avro"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -76,11 +76,11 @@ func (mr *MetricsReporter) Start() {
 	Logger.Debug("Starting metrics reporter")
 	tick := time.NewTicker(mr.reportingInterval)
 
-	go func() {
-		for meta := range mr.producer.RecordsMetadata {
-			Logger.Tracef("Received record metadata: topic %s, partition %d, offset %d, error %s", meta.Topic, meta.Partition, meta.Offset, meta.Error)
-		}
-	}()
+	//go func() {
+	//	for meta := range mr.producer.RecordsMetadata {
+	//		Logger.Tracef("Received record metadata: topic %s, partition %d, offset %d, error %s", meta.Topic, meta.Partition, meta.Offset, meta.Error)
+	//	}
+	//}()
 
 	for {
 		select {

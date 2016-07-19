@@ -19,7 +19,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/elodina/syscol/syscol"
+	"./syscol"
 	"os"
 )
 
@@ -96,6 +96,8 @@ func handleScheduler() error {
 	flag.StringVar(&syscol.Config.FrameworkName, "framework.name", syscol.Config.FrameworkName, "Framework name.")
 	flag.StringVar(&syscol.Config.FrameworkRole, "framework.role", syscol.Config.FrameworkRole, "Framework role.")
 	flag.StringVar(&syscol.Config.Namespace, "namespace", syscol.Config.Namespace, "Namespace.")
+	flag.StringVar(&syscol.Config.Principal,"mesos_authentication_principal", syscol.Config.Principal, "Mesos authentication principal.")
+	flag.StringVar(&syscol.Config.SecretFile,"mesos_authentication_secret_file", syscol.Config.SecretFile, "Mesos authentication secret file.")
 
 	flag.Parse()
 

@@ -21,8 +21,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
-	"github.com/elodina/syscol/syscol"
+	"./syscol"
 	"github.com/mesos/mesos-go/executor"
 )
 

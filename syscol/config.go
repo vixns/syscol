@@ -35,6 +35,8 @@ var Config *config = &config{
 	ReportingInterval: 1 * time.Second,
 	Transform:         "none",
 	LogLevel:          "info",
+	Principal:		   "",
+	SecretFile:		   "",
 }
 
 var executorMask = regexp.MustCompile("executor.*")
@@ -55,6 +57,8 @@ type config struct {
 	SchemaRegistryUrl  string
 	Namespace          string
 	LogLevel           string
+	Principal          string
+	SecretFile         string
 }
 
 func (c *config) CanStart() bool {
@@ -89,9 +93,11 @@ producer properties: %s
 topic:               %s
 transform:           %s
 namespace:           %s
+authentication principal:           %s
+authentication secret file:           %s
 log level:           %s
 `, c.Api, c.Master, c.FrameworkName, c.FrameworkRole, c.User, c.Cpus, c.Mem, c.ReportingInterval,
-		c.Executor, c.ProducerProperties, c.Topic, c.Transform, c.Namespace, c.LogLevel)
+		c.Executor, c.ProducerProperties, c.Topic, c.Transform, c.Namespace, c.Principal, c.SecretFile, c.LogLevel)
 }
 
 func InitLogging(level string) error {

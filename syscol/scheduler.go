@@ -25,9 +25,12 @@ import (
 	"sync"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/mesos/mesos-go/auth"
+	"github.com/mesos/mesos-go/auth/sasl"
 	mesos "github.com/mesos/mesos-go/mesosproto"
 	util "github.com/mesos/mesos-go/mesosutil"
 	"github.com/mesos/mesos-go/scheduler"
+	"golang.org/x/net/context"
 )
 
 var sched *Scheduler // This is needed for HTTP server to be able to update this scheduler
@@ -63,10 +66,34 @@ func (s *Scheduler) Start() error {
 		Checkpoint: proto.Bool(true),
 	}
 
+	cred := (*mesos.Credential)(nil)
+	if Config.Principal != "" {
+		frameworkInfo.Principal = proto.String(Config.Principal)
+		cred = &mesos.Credential{
+			Principal: proto.String(Config.Principal),
+		}
+		if Config.SecretFile != "" {
+			_, err := os.Stat(Config.SecretFile)
+			if err != nil {
+				Logger.Critical("missing secret file: ", err.Error())
+			}
+			secret, err := ioutil.ReadFile(Config.SecretFile)
+			if err != nil {
+				Logger.Critical("failed to read secret file: ", err.Error())
+			}
+			cred.Secret = proto.String(string(secret))
+		}
+	}
+
 	driverConfig := scheduler.DriverConfig{
 		Scheduler: s,
 		Framework: frameworkInfo,
+		Credential: cred,
 		Master:    Config.Master,
+		WithAuthContext: func(ctx context.Context) context.Context {
+			ctx = auth.WithLoginProvider(ctx, sasl.ProviderName)
+			return ctx
+		},
 	}
 
 	driver, err := scheduler.NewMesosSchedulerDriver(driverConfig)
